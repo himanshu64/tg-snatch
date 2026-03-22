@@ -1,8 +1,14 @@
 [package]
 name = "tg-snatch"
-version = "0.2.0"
+version = "0.2.4"
 edition = "2021"
 description = "Snatch files from Telegram — a beautiful, secure CLI downloader"
+license = "MIT"
+repository = "https://github.com/himanshu64/tg-snatch"
+homepage = "https://github.com/himanshu64/tg-snatch"
+documentation = "https://github.com/himanshu64/tg-snatch#readme"
+keywords = ["telegram", "downloader", "cli", "bot-api"]
+categories = ["command-line-utilities"]
 
 [[bin]]
 name = "tg-snatch"
