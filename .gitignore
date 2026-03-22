@@ -2,3 +2,5 @@
 *.db
 .env
 .DS_Store
+
+.git
