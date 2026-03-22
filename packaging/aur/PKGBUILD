@@ -1,0 +1,22 @@
+# Maintainer: Himanshu Sharma
+pkgname=tg-snatch-bin
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Snatch files from Telegram — fast, secure, beautiful CLI downloader"
+arch=('x86_64' 'aarch64')
+url="https://github.com/himanshu64/tg-snatch"
+license=('MIT')
+depends=('curl')
+provides=('tg-snatch')
+conflicts=('tg-snatch')
+
+source_x86_64=("${url}/releases/download/v${pkgver}/tg-snatch-x86_64-unknown-linux-gnu.tar.gz")
+source_aarch64=("${url}/releases/download/v${pkgver}/tg-snatch-aarch64-unknown-linux-gnu.tar.gz")
+
+sha256sums_x86_64=('PLACEHOLDER')
+sha256sums_aarch64=('PLACEHOLDER')
+
+package() {
+    install -Dm755 tg-snatch "${pkgdir}/usr/bin/tg-snatch"
+    install -Dm644 /dev/null "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

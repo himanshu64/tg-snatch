@@ -1,0 +1,21 @@
+{
+    "version": "0.1.0",
+    "description": "Snatch files from Telegram — fast, secure, beautiful CLI downloader",
+    "homepage": "https://github.com/himanshu64/tg-snatch",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/himanshu64/tg-snatch/releases/download/v0.1.0/tg-snatch-x86_64-pc-windows-msvc.zip",
+            "hash": "PLACEHOLDER_SHA256"
+        }
+    },
+    "bin": "tg-snatch.exe",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/himanshu64/tg-snatch/releases/download/v$version/tg-snatch-x86_64-pc-windows-msvc.zip"
+            }
+        }
+    }
+}
