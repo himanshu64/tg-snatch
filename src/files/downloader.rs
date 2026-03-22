@@ -1,6 +1,5 @@
 use anyhow::{Context, Result};
 use console::style;
-use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use tokio::sync::Semaphore;
@@ -9,6 +8,7 @@ use crate::files::catalog::FileEntry;
 use crate::security;
 use crate::storage::db::Database;
 use crate::telegram::client::TelegramClient;
+use crate::ui::progress;
 
 pub async fn download_files(
     client: &TelegramClient,
@@ -41,18 +41,9 @@ pub async fn download_files(
         return Ok(());
     }
 
-    let mp = MultiProgress::new();
+    let (mp, total_bar) = progress::multi_download(files.len() as u64);
     let semaphore = Arc::new(Semaphore::new(parallel));
     let mut handles = Vec::new();
-
-    let total_bar = mp.add(ProgressBar::new(files.len() as u64));
-    total_bar.set_style(
-        ProgressStyle::default_bar()
-            .template("{msg} [{bar:30.green/dim}] {pos}/{len}")
-            .unwrap()
-            .progress_chars("━╸─"),
-    );
-    total_bar.set_message("Overall progress");
 
     for file in files {
         let sem = semaphore.clone();
@@ -88,7 +79,7 @@ pub async fn download_files(
                 if let Some(expected) = total_size {
                     if meta.len() == expected {
                         total_bar.inc(1);
-                        continue; // Skip — already downloaded
+                        continue;
                     }
                 }
             }
@@ -98,13 +89,7 @@ pub async fn download_files(
             tokio::fs::create_dir_all(parent).await?;
         }
 
-        let pb = mp.insert_before(&total_bar, ProgressBar::new(total_size.unwrap_or(0)));
-        pb.set_style(
-            ProgressStyle::default_bar()
-                .template("  {spinner:.cyan} {msg}\n    [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({bytes_per_sec}, ETA: {eta})")
-                .unwrap()
-                .progress_chars("━╸─"),
-        );
+        let pb = progress::add_file_bar(&mp, &total_bar, total_size.unwrap_or(0));
         pb.set_message(truncate_name(&file.display_name(), 40));
 
         let handle = tokio::spawn(async move {
@@ -174,7 +159,7 @@ async fn download_with_curl(
     url: &str,
     local_path: &Path,
     total_size: Option<u64>,
-    pb: &ProgressBar,
+    pb: &indicatif::ProgressBar,
 ) -> Result<()> {
     use tokio::process::Command;
 
@@ -190,7 +175,7 @@ async fn download_with_curl(
         if let Some(total) = total_size {
             if existing >= total {
                 pb.set_position(total);
-                return Ok(()); // Already complete
+                return Ok(());
             }
         }
         pb.set_position(existing);
@@ -299,7 +284,7 @@ async fn download_with_curl(
 
 fn build_output_path(output_dir: &str, entry: &FileEntry) -> PathBuf {
     let subdir = entry.file_type.subdir();
-    let name = entry.display_name(); // Already sanitized via security::sanitize_filename
+    let name = entry.display_name();
     security::safe_output_path(output_dir, subdir, &name)
 }
 

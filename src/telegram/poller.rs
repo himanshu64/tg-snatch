@@ -1,6 +1,5 @@
 use anyhow::Result;
 use console::style;
-use indicatif::{ProgressBar, ProgressStyle};
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::signal;
@@ -8,6 +7,7 @@ use tokio::signal;
 use super::client::TelegramClient;
 use crate::files::filter::classify_message;
 use crate::storage::db::Database;
+use crate::ui::progress::{self, SpinnerType};
 
 pub async fn watch(
     client: &TelegramClient,
@@ -19,14 +19,7 @@ pub async fn watch(
     let mut offset = db.get_offset()?;
     let mut total_indexed = 0u64;
 
-    let spinner = ProgressBar::new_spinner();
-    spinner.set_style(
-        ProgressStyle::default_spinner()
-            .template("{spinner:.green} {msg}")
-            .unwrap(),
-    );
-    spinner.enable_steady_tick(Duration::from_millis(100));
-    spinner.set_message("Waiting for files...");
+    let spinner = progress::spinner(SpinnerType::Watch, "Waiting for files...");
 
     let deadline = duration.map(|d| tokio::time::Instant::now() + Duration::from_secs(d));
 
@@ -88,12 +81,9 @@ pub async fn watch(
             db.set_offset(off)?;
         }
 
-        if !continuous && !updates.is_empty() {
-            // In non-continuous mode, stop after processing a batch
-            if duration.is_none() {
-                spinner.finish_with_message(format!("Done. {} files indexed.", total_indexed));
-                return Ok(());
-            }
+        if !continuous && !updates.is_empty() && duration.is_none() {
+            spinner.finish_with_message(format!("Done. {} files indexed.", total_indexed));
+            return Ok(());
         }
     }
 }
