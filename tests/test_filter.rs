@@ -1,4 +1,3 @@
-use tg_snatch::files::catalog::FileEntry;
 use tg_snatch::files::filter::{classify_message, FileType};
 use tg_snatch::telegram::types::*;
 
