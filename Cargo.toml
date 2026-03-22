@@ -1,6 +1,6 @@
 [package]
 name = "tg-snatch"
-version = "0.2.4"
+version = "0.3.0"
 edition = "2021"
 description = "Snatch files from Telegram — a beautiful, secure CLI downloader"
 license = "MIT"
