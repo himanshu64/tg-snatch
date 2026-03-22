@@ -1,10 +1,10 @@
 # tg-snatch — Snatch Files from Telegram
 
-![Rust](https://img.shields.io/badge/Rust-1.70%2B-orange?logo=rust)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Build](https://img.shields.io/badge/build-passing-brightgreen)
-![Release](https://img.shields.io/badge/release-v0.1.0-blue)
-![Downloads](https://img.shields.io/badge/downloads-0-lightgrey)
+[![CI](https://github.com/himanshu64/tg-snatch/actions/workflows/ci.yml/badge.svg)](https://github.com/himanshu64/tg-snatch/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/himanshu64/tg-snatch?color=blue&logo=github)](https://github.com/himanshu64/tg-snatch/releases/latest)
+[![Crates.io](https://img.shields.io/crates/v/tg-snatch?logo=rust)](https://crates.io/crates/tg-snatch)
+[![Downloads](https://img.shields.io/github/downloads/himanshu64/tg-snatch/total?logo=github)](https://github.com/himanshu64/tg-snatch/releases)
+[![License](https://img.shields.io/github/license/himanshu64/tg-snatch)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-informational)
 
 A beautiful, secure CLI tool to snatch PDFs, images, videos, audio, and other files from Telegram channels and chats. Built with Rust.
