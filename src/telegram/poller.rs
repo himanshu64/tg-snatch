@@ -91,10 +91,7 @@ pub async fn watch(
         if !continuous && !updates.is_empty() {
             // In non-continuous mode, stop after processing a batch
             if duration.is_none() {
-                spinner.finish_with_message(format!(
-                    "Done. {} files indexed.",
-                    total_indexed
-                ));
+                spinner.finish_with_message(format!("Done. {} files indexed.", total_indexed));
                 return Ok(());
             }
         }

@@ -56,7 +56,15 @@ fn parse_watch_with_duration() {
 
 #[test]
 fn parse_list_with_filters() {
-    let cli = parse(&["list", "--type", "pdf", "--chat-id", "-100", "--limit", "25"]);
+    let cli = parse(&[
+        "list",
+        "--type",
+        "pdf",
+        "--chat-id",
+        "-100",
+        "--limit",
+        "25",
+    ]);
     match &cli.command {
         Some(Command::List {
             chat_id,
@@ -140,7 +148,14 @@ fn parse_download_specific_files() {
 #[test]
 fn parse_all_file_types() {
     let types = [
-        "pdf", "image", "video", "audio", "document", "animation", "voice", "all",
+        "pdf",
+        "image",
+        "video",
+        "audio",
+        "document",
+        "animation",
+        "voice",
+        "all",
     ];
     for t in types {
         let cli = parse(&["list", "--type", t]);

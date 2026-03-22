@@ -28,14 +28,9 @@ pub fn select_files(files: &[FileEntry]) -> anyhow::Result<Vec<FileEntry>> {
     );
     println!();
 
-    let selected = MultiSelect::new()
-        .items(&items)
-        .interact()?;
+    let selected = MultiSelect::new().items(&items).interact()?;
 
-    let result = selected
-        .into_iter()
-        .map(|i| files[i].clone())
-        .collect();
+    let result = selected.into_iter().map(|i| files[i].clone()).collect();
 
     Ok(result)
 }

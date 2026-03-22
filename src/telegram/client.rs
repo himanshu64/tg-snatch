@@ -64,11 +64,7 @@ impl TelegramClient {
         }
     }
 
-    pub async fn get_updates(
-        &self,
-        offset: Option<i64>,
-        timeout: u64,
-    ) -> Result<Vec<Update>> {
+    pub async fn get_updates(&self, offset: Option<i64>, timeout: u64) -> Result<Vec<Update>> {
         let mut params = vec![
             ("timeout".to_string(), timeout.to_string()),
             (

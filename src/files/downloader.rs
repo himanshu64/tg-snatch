@@ -98,10 +98,7 @@ pub async fn download_files(
             tokio::fs::create_dir_all(parent).await?;
         }
 
-        let pb = mp.insert_before(
-            &total_bar,
-            ProgressBar::new(total_size.unwrap_or(0)),
-        );
+        let pb = mp.insert_before(&total_bar, ProgressBar::new(total_size.unwrap_or(0)));
         pb.set_style(
             ProgressStyle::default_bar()
                 .template("  {spinner:.cyan} {msg}\n    [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({bytes_per_sec}, ETA: {eta})")
@@ -113,8 +110,7 @@ pub async fn download_files(
         let handle = tokio::spawn(async move {
             let _permit = sem.acquire().await.unwrap();
 
-            let result =
-                download_with_curl(&download_url, &local_path, total_size, &pb).await;
+            let result = download_with_curl(&download_url, &local_path, total_size, &pb).await;
 
             match &result {
                 Ok(()) => {
@@ -184,10 +180,7 @@ async fn download_with_curl(
 
     // Refuse symlink targets to prevent symlink attacks
     if local_path.is_symlink() {
-        anyhow::bail!(
-            "Refusing to write to symlink: {}",
-            local_path.display()
-        );
+        anyhow::bail!("Refusing to write to symlink: {}", local_path.display());
     }
 
     // Check for existing partial download
@@ -213,12 +206,18 @@ async fn download_with_curl(
     cmd.arg("-L") // follow redirects
         .arg("-f") // fail on HTTP errors
         .arg("-s") // silent
-        .arg("--proto").arg("=https") // HTTPS only
-        .arg("--max-redirs").arg("5") // limit redirect hops
-        .arg("--connect-timeout").arg("30") // connection timeout
-        .arg("--max-time").arg("3600") // max 1 hour per file
-        .arg("--retry").arg("3") // retry on transient failures
-        .arg("--retry-delay").arg("2") // 2s between retries
+        .arg("--proto")
+        .arg("=https") // HTTPS only
+        .arg("--max-redirs")
+        .arg("5") // limit redirect hops
+        .arg("--connect-timeout")
+        .arg("30") // connection timeout
+        .arg("--max-time")
+        .arg("3600") // max 1 hour per file
+        .arg("--retry")
+        .arg("3") // retry on transient failures
+        .arg("--retry-delay")
+        .arg("2") // 2s between retries
         .arg("-o")
         .arg(&local_str);
 
@@ -229,9 +228,10 @@ async fn download_with_curl(
     cmd.stderr(std::process::Stdio::piped())
         .stdout(std::process::Stdio::null());
 
-    let mut child = cmd.arg(url).spawn().context(
-        "Failed to run curl. Make sure curl is installed on your system.",
-    )?;
+    let mut child = cmd
+        .arg(url)
+        .spawn()
+        .context("Failed to run curl. Make sure curl is installed on your system.")?;
 
     // Monitor file size for progress
     let path_clone = local_path.to_path_buf();
@@ -261,10 +261,14 @@ async fn download_with_curl(
                 .arg("-L")
                 .arg("-f")
                 .arg("-s")
-                .arg("--proto").arg("=https")
-                .arg("--max-redirs").arg("5")
-                .arg("--connect-timeout").arg("30")
-                .arg("--max-time").arg("3600")
+                .arg("--proto")
+                .arg("=https")
+                .arg("--max-redirs")
+                .arg("5")
+                .arg("--connect-timeout")
+                .arg("30")
+                .arg("--max-time")
+                .arg("3600")
                 .arg("-o")
                 .arg(&local_str)
                 .arg(url)

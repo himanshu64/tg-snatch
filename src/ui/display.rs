@@ -12,7 +12,9 @@ pub fn print_banner() {
     );
     println!(
         "  {}",
-        style("║  tg-snatch  ·  Snatch from Telegram   ║").cyan().bold()
+        style("║  tg-snatch  ·  Snatch from Telegram   ║")
+            .cyan()
+            .bold()
     );
     println!(
         "  {}",
@@ -34,11 +36,7 @@ pub fn print_bot_info(user: &User) {
             style(username).cyan()
         );
     }
-    println!(
-        "  {} {}",
-        style("ID:").bold(),
-        style(user.id).dim()
-    );
+    println!("  {} {}", style("ID:").bold(), style(user.id).dim());
     println!(
         "  {} {}",
         style("Status:").bold(),
@@ -68,24 +66,12 @@ pub fn print_file_table(files: &[FileEntry]) {
     for (i, file) in files.iter().enumerate() {
         let type_styled = match file.file_type {
             crate::files::filter::FileType::Pdf => style(format!("{:<10}", "PDF")).red(),
-            crate::files::filter::FileType::Image => {
-                style(format!("{:<10}", "IMAGE")).green()
-            }
-            crate::files::filter::FileType::Video => {
-                style(format!("{:<10}", "VIDEO")).magenta()
-            }
-            crate::files::filter::FileType::Audio => {
-                style(format!("{:<10}", "AUDIO")).blue()
-            }
-            crate::files::filter::FileType::Document => {
-                style(format!("{:<10}", "DOC")).white()
-            }
-            crate::files::filter::FileType::Animation => {
-                style(format!("{:<10}", "GIF")).yellow()
-            }
-            crate::files::filter::FileType::Voice => {
-                style(format!("{:<10}", "VOICE")).cyan()
-            }
+            crate::files::filter::FileType::Image => style(format!("{:<10}", "IMAGE")).green(),
+            crate::files::filter::FileType::Video => style(format!("{:<10}", "VIDEO")).magenta(),
+            crate::files::filter::FileType::Audio => style(format!("{:<10}", "AUDIO")).blue(),
+            crate::files::filter::FileType::Document => style(format!("{:<10}", "DOC")).white(),
+            crate::files::filter::FileType::Animation => style(format!("{:<10}", "GIF")).yellow(),
+            crate::files::filter::FileType::Voice => style(format!("{:<10}", "VOICE")).cyan(),
         };
 
         let name = truncate(&file.display_name(), 35);
@@ -113,10 +99,7 @@ pub fn print_file_table(files: &[FileEntry]) {
     }
 
     println!();
-    println!(
-        "  {} files total",
-        style(files.len()).cyan().bold()
-    );
+    println!("  {} files total", style(files.len()).cyan().bold());
     println!();
 }
 

@@ -50,7 +50,9 @@ fn classify_generic_document() {
         file_id: "file_doc".to_string(),
         file_unique_id: "unique_doc".to_string(),
         file_name: Some("data.xlsx".to_string()),
-        mime_type: Some("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".to_string()),
+        mime_type: Some(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".to_string(),
+        ),
         file_size: Some(5000),
     });
 

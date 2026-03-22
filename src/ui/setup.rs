@@ -74,10 +74,7 @@ pub fn run_setup(existing_token: Option<&str>) -> Result<SetupResult> {
     ];
 
     let action_idx = Select::new()
-        .with_prompt(format!(
-            "  {} What would you like to do",
-            style("?").cyan()
-        ))
+        .with_prompt(format!("  {} What would you like to do", style("?").cyan()))
         .items(actions)
         .default(0)
         .interact()?;
@@ -120,10 +117,7 @@ pub fn run_setup(existing_token: Option<&str>) -> Result<SetupResult> {
             let (after, before) = ask_date_range()?;
 
             let parallel: usize = Input::new()
-                .with_prompt(format!(
-                    "  {} Parallel downloads",
-                    style("?").cyan()
-                ))
+                .with_prompt(format!("  {} Parallel downloads", style("?").cyan()))
                 .default(3)
                 .interact_text()?;
 
@@ -243,10 +237,7 @@ fn ask_file_type() -> Result<Option<FileTypeFilter>> {
 
 fn ask_date_range() -> Result<(Option<String>, Option<String>)> {
     let use_date = Confirm::new()
-        .with_prompt(format!(
-            "  {} Filter by date range",
-            style("?").cyan()
-        ))
+        .with_prompt(format!("  {} Filter by date range", style("?").cyan()))
         .default(false)
         .interact()?;
 

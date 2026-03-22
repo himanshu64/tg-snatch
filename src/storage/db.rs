@@ -30,7 +30,6 @@ impl Database {
     }
 
     fn init(conn: Connection) -> Result<Self> {
-
         conn.execute_batch(
             "CREATE TABLE IF NOT EXISTS files (
                 file_unique_id TEXT PRIMARY KEY,
@@ -135,14 +134,10 @@ impl Database {
                 Ok(FileEntry {
                     file_unique_id: row.get("file_unique_id")?,
                     file_id: row.get("file_id")?,
-                    file_type: FileType::from_db(
-                        &row.get::<_, String>("file_type")?,
-                    )
-                    .unwrap_or(FileType::Document),
+                    file_type: FileType::from_db(&row.get::<_, String>("file_type")?)
+                        .unwrap_or(FileType::Document),
                     file_name: row.get("file_name")?,
-                    file_size: row
-                        .get::<_, Option<i64>>("file_size")?
-                        .map(|s| s as u64),
+                    file_size: row.get::<_, Option<i64>>("file_size")?.map(|s| s as u64),
                     mime_type: row.get("mime_type")?,
                     chat_id: row.get("chat_id")?,
                     message_id: row.get("message_id")?,
@@ -167,11 +162,8 @@ impl Database {
 
     pub fn get_offset(&self) -> Result<Option<i64>> {
         let conn = self.conn.lock().unwrap();
-        let mut stmt =
-            conn.prepare("SELECT value FROM state WHERE key = 'poll_offset'")?;
-        let result = stmt
-            .query_map([], |row| row.get::<_, String>(0))?
-            .next();
+        let mut stmt = conn.prepare("SELECT value FROM state WHERE key = 'poll_offset'")?;
+        let result = stmt.query_map([], |row| row.get::<_, String>(0))?.next();
 
         match result {
             Some(Ok(val)) => Ok(val.parse().ok()),

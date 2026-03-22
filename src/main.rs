@@ -39,7 +39,13 @@ async fn main() -> Result<()> {
             limit,
             after,
             before,
-        }) => cmd_list(*chat_id, r#type.clone(), *limit, after.clone(), before.clone()),
+        }) => cmd_list(
+            *chat_id,
+            r#type.clone(),
+            *limit,
+            after.clone(),
+            before.clone(),
+        ),
         Some(Command::Download {
             chat_id,
             r#type,
@@ -119,11 +125,8 @@ async fn run_interactive(cli: &Cli) -> Result<()> {
         } => {
             let db = Database::open()?;
             let files = db.query_files(chat_id, file_type.as_ref(), 50, false)?;
-            let files = files::filter::filter_by_date_range(
-                files,
-                after.as_deref(),
-                before.as_deref(),
-            )?;
+            let files =
+                files::filter::filter_by_date_range(files, after.as_deref(), before.as_deref())?;
             if files.is_empty() {
                 println!(
                     "  {} No files indexed yet. Run {} first.",
@@ -235,12 +238,7 @@ async fn cmd_info(cli: &Cli) -> Result<()> {
     Ok(())
 }
 
-async fn cmd_watch(
-    cli: &Cli,
-    chat_id: i64,
-    continuous: bool,
-    duration: Option<u64>,
-) -> Result<()> {
+async fn cmd_watch(cli: &Cli, chat_id: i64, continuous: bool, duration: Option<u64>) -> Result<()> {
     let token = get_token(cli)?;
     let client = TelegramClient::new(token);
 
@@ -281,11 +279,7 @@ fn cmd_list(
     let files = db.query_files(chat_id, file_type.as_ref(), limit, false)?;
 
     // Apply date range filter
-    let files = files::filter::filter_by_date_range(
-        files,
-        after.as_deref(),
-        before.as_deref(),
-    )?;
+    let files = files::filter::filter_by_date_range(files, after.as_deref(), before.as_deref())?;
 
     if files.is_empty() {
         println!(
@@ -357,11 +351,7 @@ async fn cmd_download(
     }
 
     // Date range filter
-    files = files::filter::filter_by_date_range(
-        files,
-        after.as_deref(),
-        before.as_deref(),
-    )?;
+    files = files::filter::filter_by_date_range(files, after.as_deref(), before.as_deref())?;
 
     // Sort order
     if desc {

@@ -48,9 +48,12 @@ fn insert_duplicate_is_ignored() {
 #[test]
 fn query_filter_by_chat_id() {
     let db = Database::open_in_memory().unwrap();
-    db.insert_file(&make_entry("a", FileType::Pdf, -100)).unwrap();
-    db.insert_file(&make_entry("b", FileType::Pdf, -200)).unwrap();
-    db.insert_file(&make_entry("c", FileType::Image, -100)).unwrap();
+    db.insert_file(&make_entry("a", FileType::Pdf, -100))
+        .unwrap();
+    db.insert_file(&make_entry("b", FileType::Pdf, -200))
+        .unwrap();
+    db.insert_file(&make_entry("c", FileType::Image, -100))
+        .unwrap();
 
     let files = db.query_files(Some(-100), None, 100, false).unwrap();
     assert_eq!(files.len(), 2);
@@ -63,9 +66,12 @@ fn query_filter_by_chat_id() {
 #[test]
 fn query_filter_by_type() {
     let db = Database::open_in_memory().unwrap();
-    db.insert_file(&make_entry("pdf1", FileType::Pdf, -100)).unwrap();
-    db.insert_file(&make_entry("img1", FileType::Image, -100)).unwrap();
-    db.insert_file(&make_entry("vid1", FileType::Video, -100)).unwrap();
+    db.insert_file(&make_entry("pdf1", FileType::Pdf, -100))
+        .unwrap();
+    db.insert_file(&make_entry("img1", FileType::Image, -100))
+        .unwrap();
+    db.insert_file(&make_entry("vid1", FileType::Video, -100))
+        .unwrap();
 
     let files = db
         .query_files(None, Some(&FileTypeFilter::Pdf), 100, false)
@@ -101,7 +107,8 @@ fn query_limit() {
 #[test]
 fn mark_downloaded() {
     let db = Database::open_in_memory().unwrap();
-    db.insert_file(&make_entry("dl1", FileType::Pdf, -100)).unwrap();
+    db.insert_file(&make_entry("dl1", FileType::Pdf, -100))
+        .unwrap();
 
     // Before marking
     let files = db.query_files(None, None, 100, true).unwrap();
@@ -135,9 +142,12 @@ fn offset_persistence() {
 #[test]
 fn query_combined_filters() {
     let db = Database::open_in_memory().unwrap();
-    db.insert_file(&make_entry("p1", FileType::Pdf, -100)).unwrap();
-    db.insert_file(&make_entry("p2", FileType::Pdf, -200)).unwrap();
-    db.insert_file(&make_entry("i1", FileType::Image, -100)).unwrap();
+    db.insert_file(&make_entry("p1", FileType::Pdf, -100))
+        .unwrap();
+    db.insert_file(&make_entry("p2", FileType::Pdf, -200))
+        .unwrap();
+    db.insert_file(&make_entry("i1", FileType::Image, -100))
+        .unwrap();
 
     // Chat -100 + PDF type
     let files = db
