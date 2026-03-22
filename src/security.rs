@@ -61,7 +61,7 @@ pub fn safe_output_path(output_dir: &str, subdir: &str, filename: &str) -> PathB
                     .unwrap_or_else(|_| p.to_path_buf())
                     .join(&safe_name)
             })
-            .ok_or(std::io::Error::new(std::io::ErrorKind::Other, "no parent")),
+            .ok_or(std::io::Error::other("no parent")),
     ) {
         // Check no path component is ".."
         for component in resolved_full.components() {

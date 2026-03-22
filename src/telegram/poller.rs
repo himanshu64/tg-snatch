@@ -75,7 +75,7 @@ pub async fn watch(
                             entry
                                 .file_name
                                 .as_deref()
-                                .unwrap_or(&entry.file_type.as_str())
+                                .unwrap_or(entry.file_type.as_str())
                         )
                         .cyan()
                     ));
